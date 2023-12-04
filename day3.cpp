@@ -114,13 +114,13 @@ int get_ratio(int x, int y, const stringlist& plan)
         {
             if (x > 0)
             {
-                if (int gear = find_gear(x - 1, y-1, plan))
-                    gears.push_back(gear);
+                if (int g = find_gear(x - 1, y-1, plan))
+                    gears.push_back(g);
             }
             if (x < width - 1)
             {
-                if (int gear = find_gear(x + 1, y-1, plan))
-                    gears.push_back(gear);
+                if (int g = find_gear(x + 1, y-1, plan))
+                    gears.push_back(g);
             }
         }
     }
@@ -135,13 +135,13 @@ int get_ratio(int x, int y, const stringlist& plan)
         {
             if (x > 0)
             {
-                if (int gear = find_gear(x - 1, y + 1, plan))
-                    gears.push_back(gear);
+                if (int g = find_gear(x - 1, y + 1, plan))
+                    gears.push_back(g);
             }
             if (x < width - 1)
             {
-                if (int gear = find_gear(x + 1, y + 1, plan))
-                    gears.push_back(gear);
+                if (int g = find_gear(x + 1, y + 1, plan))
+                    gears.push_back(g);
             }
         }
     }
