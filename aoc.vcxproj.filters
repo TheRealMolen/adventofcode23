@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{2c79ced9-57ff-4fe5-b800-c2da5bc1f721}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chargrid.h">
@@ -59,11 +62,25 @@
     <ClCompile Include="day4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="day5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="data\day1.txt" />
-    <Text Include="data\day2.txt" />
-    <Text Include="data\day3.txt" />
-    <Text Include="data\day4.txt" />
+    <Text Include="data\day3.txt">
+      <Filter>data</Filter>
+    </Text>
+    <Text Include="data\day1.txt">
+      <Filter>data</Filter>
+    </Text>
+    <Text Include="data\day2.txt">
+      <Filter>data</Filter>
+    </Text>
+    <Text Include="data\day4.txt">
+      <Filter>data</Filter>
+    </Text>
+    <Text Include="data\day5.txt">
+      <Filter>data</Filter>
+    </Text>
   </ItemGroup>
 </Project>
