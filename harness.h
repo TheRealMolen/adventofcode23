@@ -242,6 +242,23 @@ static inline string trim_copy(string s, const char* chars) {
 }
 
 
+// read a whitespace-delimited sequence of values into a vector
+template<typename IntType = int>
+vector<IntType> string_to_intlist(const string& str)
+{
+    vector<IntType> vec;
+    istringstream is(str);
+    while (!is.eof())
+    {
+        IntType i;
+        is >> skipws >>i;
+        vec.push_back(i);
+    }
+
+    return vec;
+}
+
+
 // read a delimiter that must match a certain string
 // eg: is >> x >> "," >> y;
 inline istream& operator>>(istream& is, const char* checkstr)
