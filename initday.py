@@ -48,8 +48,7 @@ def try_download_input(day):
     
 
 def make_data(day):
-    #print("****SKIPPING DOWNLOAD****")
-    #input = "" ## try_download_input(day)
+    input = try_download_input(day)
 
     datafilename = f"data/day{day}.txt"
     if os.path.exists(datafilename):
