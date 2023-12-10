@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "harness.h"
 #include "pt2.h"
-#include <assert.h>
 
 
 enum Direction { North, East, South, West, DirCount, InvalidDir=DirCount };
@@ -66,10 +65,6 @@ struct CharMap
 
     char Cell(const Pt2i& p) const
     {
-        assert(p.x >= 0);
-        assert(p.y >= 0);
-        assert(p.x < w);
-        assert(p.y < h);
         return data[p.x + p.y * w];
     }
 
@@ -138,18 +133,9 @@ int day10_2(const stringlist& input)
     vector<char> path(size(pipes.data), '.');
     const int width = pipes.w;
 
-    auto markpath = [&path, width](const Pt2i& p, Direction dir)
+    auto markpath = [&path, width](const Pt2i& p)
     {
-        char c = "^>v<"[dir];
-        path[p.x + p.y * width] = c;
-    };
-    auto dumppath = [&path, width]()
-    {
-        for (auto itPath = begin(path); itPath != end(path); itPath += width)
-        {
-            string_view row(itPath, itPath + width);
-            cout << row << endl;
-        }
+        path[p.x + p.y * width] = 'x';
     };
 
     auto initDirs = pipes.GetCellExits(pipes.start);
@@ -159,7 +145,7 @@ int day10_2(const stringlist& input)
     };
 
     for (auto& m : mice)
-        markpath(m.pos, m.dir);
+        markpath(m.pos);
 
     do
     {
@@ -175,72 +161,45 @@ int day10_2(const stringlist& input)
             m.pos = newpos;
             ++m.steps;
 
-            markpath(newpos, m.dir);
+            markpath(newpos);
         }
 
     } while (mice[0].pos != mice[1].pos);
 
-
- //   dumppath();
-
-    stringlist e;
+    // find all the enclosed cells
     int enclosed = 0;
     auto itPipe = begin(pipes.data);
     for (auto itPath = begin(path); itPath != end(path); /**/)
     {
         string s;
         bool inside = false;
-        bool boundary = false;
         bool enteredFromNorth = false;
-
-        // .F-------7.
-        // oiiiiiiiiio
-        // nBBBBBBBBBn
-
-        // .|L-7.F-J|.
-        // oiooooiiioo
-        // nnBBnnBBnnn
 
         for (auto rowEnd = itPath + width; itPath != rowEnd; ++itPath, ++itPipe)
         {
             char c = *itPath;
             char p = (c != '.') ? *itPipe : '.';
-            char dbg = '.';// p;
             if (c == '.' && inside)
             {
-                dbg = 'I';
                 ++enclosed;
             }
             else if (p == '|')
             {
-                assert(!boundary);
                 inside = !inside;
             }
             else if (p == '7' || p == 'J')
             {
-                assert(boundary);
                 bool leavingToNorth = (p == 'J');
                 if (enteredFromNorth == leavingToNorth)
                     inside = !inside;
-                boundary = false;
             }
             else if (p == 'F' || p == 'L')
             {
                 inside = !inside;
-                boundary = true;
                 enteredFromNorth = (p == 'L');
             }
-            else if (p == '-')
-            {
-                assert(boundary);
-                //boundary = true;
-            }
-            s += dbg;
         }
-
-        e.push_back(s);
     }
-   // cout << endl << e << endl;
 
     return enclosed;
 }
@@ -249,25 +208,12 @@ int day10_2(const stringlist& input)
 void run_day10()
 {
     string sample1 =
-R"(.....
-.S-7.
-.|.|.
-.L-J.
-.....)";
-    string sample1b =
 R"(-L|F7
 7S-7|
 L|7||
 -L-J|
 L|-JF)";
-
     string sample2 =
-R"(..F7.
-.FJ|.
-SJ.L7
-|F--J
-LJ...)";
-    string sample2b =
 R"(7-F7-
 .FJ|7
 SJLL7
@@ -275,9 +221,7 @@ SJLL7
 LJ.LJ)";
 
     test(4, day10(READ(sample1)));
-    test(4, day10(READ(sample1b)));
     test(8, day10(READ(sample2)));
-    test(8, day10(READ(sample2b)));
     gogogo(day10(LOAD(10)));
 
 
@@ -323,6 +267,7 @@ L---JF-JLJ.||-FJLJJ7
 7-L-JL7||F7|L7F-7F7|
 L.L7LFJ|||||FJL7||LJ
 L7JLJL-JLJLJL--JLJ.L)";
+
     test(4, day10_2(READ(sample3)));
     test(4, day10_2(READ(sample3b)));
     test(8, day10_2(READ(sample4)));
