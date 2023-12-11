@@ -36,6 +36,12 @@ using i32 = int32_t;
 using i64 = int64_t;
 
 
+int isize(const auto& range)
+{
+    return int(size(range));
+}
+
+
 // ---- COLOUR SHIZ ----
 extern HANDLE hStdIn;
 extern HANDLE hStdOut;

@@ -2,6 +2,8 @@
 
 #include <ostream>
 #include <vector>
+#include "harness.h"
+#include "pt2.h"
 
 
 #define CHECKED_VECTOR2Dx
