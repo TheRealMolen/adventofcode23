@@ -160,6 +160,7 @@
     <ClInclude Include="vector2d.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="day12.cpp" />
     <ClCompile Include="day11.cpp" />
     <ClCompile Include="day10.cpp" />
     <ClCompile Include="day1.cpp" />
@@ -183,6 +184,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="data\day12.txt" />
     <Text Include="data\day11.txt" />
     <Text Include="data\day10.txt" />
     <Text Include="data\day1.txt" />

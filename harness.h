@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -257,8 +258,30 @@ vector<IntType> string_to_intlist(const string& str)
     while (!is.eof())
     {
         IntType i;
-        is >> skipws >>i;
+        is >> skipws >> i;
         vec.push_back(i);
+    }
+
+    return vec;
+}
+// read a delimited sequence of values into a vector
+template<typename IntType = int>
+vector<IntType> string_to_intlist(const string& str, [[maybe_unused]] char delim)
+{
+    vector<IntType> vec;
+    istringstream is(str);
+    while (!is.eof())
+    {
+        IntType i;
+        is >> skipws >> i;
+        vec.push_back(i);
+
+        if (!is.eof())
+        {
+            char dummy;
+            is >> dummy;
+            assert(dummy == delim);
+        }
     }
 
     return vec;
