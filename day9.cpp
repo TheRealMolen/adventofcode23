@@ -9,6 +9,7 @@ int extrap_history(const string& line)
 
     vector<int> curr = readings;
     vector<int> next;
+    next.reserve(100);
     do {
         for (auto a = begin(curr), b=a+1; b != end(curr); ++a, ++b)
         {
@@ -28,10 +29,12 @@ int unextrap_history(const string& line)
 {
     vector<int> readings = string_to_intlist(line);
     vector<int> head;
+    head.reserve(100);
     head.push_back(readings.front());
 
     vector<int> curr = readings;
     vector<int> next;
+    next.reserve(100);
     do {
         for (auto a = begin(curr), b = a + 1; b != end(curr); ++a, ++b)
         {

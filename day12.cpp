@@ -375,7 +375,7 @@ R"(???.### 1,1,3
     test(4, count_arrangements(".??..??...?##. 1,1,3"));
     test(10, count_arrangements("?###???????? 3,2,1"));
     test(21, day12(READ(sample)));
-    gogogo(day12(LOAD(12)), 7307ll);
+    nononoD(day12(LOAD(12)), 7307ll);
 
     test(1, count_arrangements<5>("???.### 1,1,3"));
     test(16384, count_arrangements<5>(".??..??...?##. 1,1,3"));

@@ -11,7 +11,7 @@ using namespace std;
 using CharGrid = vector<string>;
 
 
-ostream& operator<<(ostream& os, const CharGrid& grid)
+inline ostream& operator<<(ostream& os, const CharGrid& grid)
 {
     for (const auto& row : grid)
         os << row << '\n';
