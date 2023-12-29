@@ -19,6 +19,12 @@ struct Pt2
         y += other.y;
         return *this;
     }
+    type& operator-=(const type& other)
+    {
+        x -= other.x;
+        y -= other.y;
+        return *this;
+    }
 
     type operator+(const type& other) const
     {

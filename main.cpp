@@ -56,12 +56,12 @@ int main()
         run_day13();
         run_day14();
         run_day15();
+        run_day16();
     }
     {
         TIME_SCOPE(new);
 
-        run_day16();
-        //run_day17();
+        run_day17();
         //run_day18();
         //run_day19();
         //run_day20();
