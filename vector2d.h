@@ -14,6 +14,9 @@ class vector2d
 public:
     using value_type = T;
     using coord = Pt2<i16>;
+    using buf_type = vector<value_type>;
+    using iterator = buf_type::iterator;
+    using const_iterator = buf_type::const_iterator;
 
     vector2d(u32 width, u32 height, const value_type& defaultVal = {})
         : m_width(width)
@@ -41,6 +44,12 @@ public:
     [[nodiscard]] u32 width() const { return m_width; }
     [[nodiscard]] u32 height() const { return m_height; }
     [[nodiscard]] u32 size() const { return m_width * m_height; }
+    [[nodiscard]] iterator begin() { return m_buf.begin(); }
+    [[nodiscard]] iterator end() { return m_buf.end(); }
+    [[nodiscard]] const_iterator begin() const { return m_buf.begin(); }
+    [[nodiscard]] const_iterator end() const { return m_buf.end(); }
+    [[nodiscard]] const value_type* data() const { return m_buf.data(); }
+    [[nodiscard]] value_type* data() { return m_buf.data(); }
 
     bool isInMap(const coord& c) const
     {
