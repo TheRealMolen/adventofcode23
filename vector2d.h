@@ -77,6 +77,15 @@ public:
         return m_buf[c.x + c.y * m_width];
     }
 
+    void setLocal(const coord& c, const value_type& v)
+    {
+#ifdef CHECKED_VECTOR2D
+        if (!isInMap(c + m_offset))
+            throw "oob";
+#endif
+        m_buf[c.x + c.y * m_width] = v;
+    }
+
     coord find_first(const value_type& needle) const
     {
         auto foundIt = ranges::find(m_buf, needle);

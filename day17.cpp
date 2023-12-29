@@ -17,27 +17,15 @@ struct Crucible
     CruxDir facing;
     i8 straightMovesLeft = 3;
 
-    int loss = 0;
+    i16 loss = 0;
 
-    static const u32 kMaxUid = (1 << 20) - 1;
+    static const u32 kMaxUid = (1 << 22) - 1;
     u32 getUid() const
     {
         return u32(pos.x) | (u32(pos.y) << 8) | (u32(facing) << 16) | (u32(straightMovesLeft) << 18);
     }
 
     auto operator<=>(const Crucible&) const = default;
-};
-
-struct CruxHash
-{
-    size_t operator()(const Crucible& c) const
-    {
-        size_t h = hash<i16>()(c.pos.x);
-        h = h ^ hash<i16>()(c.pos.y);
-        h = h ^ hash<i8>()(c.facing);
-        h = h ^ hash<i8>()(c.straightMovesLeft);
-        return h;
-    }
 };
 
 struct CruxPrioGreater
@@ -52,7 +40,6 @@ struct CruxPrioGreater
 int day17(const stringlist& input)
 {
     const vector2d<char> cells(input);
-    unordered_set<Crucible, CruxHash> visited;
     vector<u8> visitedIds(Crucible::kMaxUid + 1, 0);
 
     const coord start{ 0,0 };
@@ -67,7 +54,7 @@ int day17(const stringlist& input)
         coord newPos = pos + dirVec;
         if (cells.isInMap(newPos))
         {
-            int newLoss = loss + (cells[newPos] - '0');
+            i16 newLoss = i16(loss + (cells[newPos] - '0'));
 
             Crucible crux(newPos, dir, straightsLeft, newLoss);
             if (!visitedIds[crux.getUid()])
@@ -105,9 +92,57 @@ int day17(const stringlist& input)
 
 int day17_2(const stringlist& input)
 {
-    for (auto& line : input)
+    constexpr i8 kMinMovesInLine = 4;
+    constexpr i8 kMaxMovesInLine = 10;
+
+    const vector2d<char> cells(input);
+    vector<u8> visitedIds(Crucible::kMaxUid + 1, 0);
+
+    const coord start{ 0,0 };
+    const coord dest{ i16(cells.width() - 1), i16(cells.height() - 1) };
+
+    priority_queue<Crucible, vector<Crucible>, CruxPrioGreater> open;
+    open.emplace(start, Right, kMaxMovesInLine);
+
+    auto tryAddMove = [&open, &cells, &visitedIds](const coord& pos, CruxDir dir, i8 straightsLeft, int loss)
     {
-        (void)line;
+        coord dirVec = DirVecs[dir];
+        coord newPos = pos + dirVec;
+        if (cells.isInMap(newPos))
+        {
+            i16 newLoss = i16(loss + (cells[newPos] - '0'));
+            Crucible crux(newPos, dir, straightsLeft, newLoss);
+            if (!visitedIds[crux.getUid()])
+                open.push(crux);
+        }
+    };
+
+    auto processMovement = [&open, &cells, &tryAddMove](const Crucible& crux)
+    {
+        if (crux.straightMovesLeft > 0)
+            tryAddMove(crux.pos, crux.facing, crux.straightMovesLeft - 1, crux.loss);
+
+        if (crux.straightMovesLeft <= (kMaxMovesInLine - kMinMovesInLine))
+        {
+            tryAddMove(crux.pos, TurnCWDirs[crux.facing], kMaxMovesInLine - 1, crux.loss);
+            tryAddMove(crux.pos, TurnACWDirs[crux.facing], kMaxMovesInLine - 1, crux.loss);
+        }
+    };
+
+    while (!open.empty())
+    {
+        const Crucible crux = open.top();
+        open.pop();
+
+        u32 uid = crux.getUid();
+        if (visitedIds[uid])
+            continue;
+        visitedIds[uid] = 1;
+
+        if (crux.pos == dest && crux.straightMovesLeft <= (kMaxMovesInLine - kMinMovesInLine))
+            return crux.loss;
+
+        processMovement(crux);
     }
 
     return -1;
@@ -143,11 +178,19 @@ R"(2413432311323
 2546548887735
 4322674655533)";
 
+    string sample2 =
+R"(111111111111
+999999999991
+999999999991
+999999999991
+999999999991)";
+
     test(7, day17(READ(simple)));
     test(7, day17(READ(simple2)));
     test(102, day17(READ(sample)));
     gogogo(day17(LOAD(17)));
 
-    //test(-100, day17_2(READ(sample)));
-    //gogogo(day17_2(LOAD(17)));
+    test(94, day17_2(READ(sample)));
+    test(71, day17_2(READ(sample2)));
+    gogogo(day17_2(LOAD(17)));
 }
